@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cognitive Offloading vs. Critical Autonomy - Interactive Infographic</title>
+<style>
+:root{--bg:#0f1923;--card:#1a2636;--accent:#6c5ce7;--accent2:#00cec9;--accent3:#fd79a8;--accent4:#fdcb6e;--text:#e0e6ed;--muted:#7f8c9b;--border:#2d3d50}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.6;overflow-x:hidden}
+.hero{background:linear-gradient(135deg,#0f1923 0%,#1a1a3e 40%,#2d1b69 70%,#1a2636 100%);padding:60px 20px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(108,92,231,.08) 0%,transparent 50%),radial-gradient(circle at 70% 50%,rgba(0,206,201,.06) 0%,transparent 50%);animation:drift 20s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-2%,1%)}}
+.hero-badge{display:inline-block;background:rgba(108,92,231,.2);border:1px solid rgba(108,92,231,.4);color:#a29bfe;font-size:13px;padding:5px 16px;border-radius:20px;margin-bottom:20px;letter-spacing:1.5px;text-transform:uppercase;position:relative}
+.hero h1{font-size:clamp(24px,5vw,42px);font-weight:700;margin-bottom:16px;line-height:1.3;position:relative;background:linear-gradient(135deg,#fff 0%,#a29bfe 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .sub{color:var(--muted);font-size:clamp(14px,2.5vw,18px);max-width:700px;margin:0 auto 12px;position:relative}
+.hero .authors{color:#7f8c9b;font-size:14px;position:relative}
+.hero .journal{color:var(--accent2);font-size:13px;margin-top:8px;position:relative}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;padding:30px 20px;max-width:1100px;margin:-30px auto 0;position:relative}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;transition:transform .3s,border-color .3s}
+.stat:hover{transform:translateY(-4px);border-color:var(--accent)}
+.stat .num{font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat .label{font-size:12px;color:var(--muted);margin-top:4px}
+
+.section{padding:50px 20px}
+.section-title{font-size:clamp(20px,4vw,30px);font-weight:700;text-align:center;margin-bottom:12px}
+.section-sub{text-align:center;color:var(--muted);font-size:15px;margin-bottom:36px;max-width:600px;margin-left:auto;margin-right:auto}
+
+/* HEEP-HE Model */
+.heep-model{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:0 auto;position:relative}
+.heep-model::before{content:'HEEP-HE';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:700;color:var(--accent);background:var(--bg);padding:10px 20px;border-radius:50%;width:90px;height:90px;display:flex;align-items:center;justify-content:center;border:2px solid var(--accent);z-index:2;text-align:center;line-height:1.2}
+.heep-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;cursor:pointer;transition:all .4s;position:relative;overflow:hidden}
+.heep-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;transition:height .4s}
+.heep-card:nth-child(1)::before{background:var(--accent)}
+.heep-card:nth-child(2)::before{background:var(--accent2)}
+.heep-card:nth-child(3)::before{background:var(--accent3)}
+.heep-card:nth-child(4)::before{background:var(--accent4)}
+.heep-card:hover::before{height:5px}
+.heep-card:hover{transform:translateY(-4px);border-color:rgba(108,92,231,.4)}
+.heep-card.active{border-color:var(--accent);box-shadow:0 8px 32px rgba(108,92,231,.15)}
+.heep-icon{font-size:32px;margin-bottom:12px}
+.heep-title{font-size:16px;font-weight:600;margin-bottom:4px}
+.heep-title-ko{font-size:13px;color:var(--muted);margin-bottom:10px}
+.heep-desc{font-size:13px;color:var(--muted);line-height:1.6;max-height:0;overflow:hidden;transition:max-height .5s ease}
+.heep-card.active .heep-desc{max-height:300px}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.tab{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 20px;border-radius:8px;cursor:pointer;font-size:14px;transition:all .3s}
+.tab.active,.tab:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* Theme cards */
+.themes-grid{display:grid;gap:16px;max-width:900px;margin:0 auto}
+.theme-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;transition:all .4s;opacity:0;transform:translateY(20px);animation:fadeUp .5s ease forwards}
+.theme-card:nth-child(2){animation-delay:.1s}
+.theme-card:nth-child(3){animation-delay:.2s}
+.theme-card:nth-child(4){animation-delay:.3s}
+.theme-card:nth-child(5){animation-delay:.4s}
+.theme-card:nth-child(6){animation-delay:.5s}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.theme-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:13px;font-weight:700;margin-right:10px;flex-shrink:0}
+.theme-header{display:flex;align-items:center;margin-bottom:8px}
+.theme-title{font-size:15px;font-weight:600}
+.theme-title-ko{font-size:13px;color:var(--accent2);margin-left:8px}
+.theme-body{font-size:13px;color:var(--muted);line-height:1.7;padding-left:38px}
+.desc-tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;margin:2px 4px 2px 0}
+.risk-tag{background:rgba(253,121,168,.15);color:var(--accent3)}
+.opp-tag{background:rgba(0,206,201,.15);color:var(--accent2)}
+
+/* Risks & Opps */
+.risk-opp{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:0 auto}
+@media(max-width:600px){.risk-opp,.heep-model{grid-template-columns:1fr}}
+.ro-col{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px}
+.ro-col h3{font-size:16px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.ro-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.ro-item:last-child{border-bottom:none}
+.ro-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:6px}
+
+/* Flow */
+.flow{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:900px;margin:0 auto;padding:20px 0}
+.flow-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;text-align:center;flex:1;min-width:160px;max-width:200px;position:relative;transition:transform .3s}
+.flow-item:hover{transform:translateY(-4px)}
+.flow-arrow{color:var(--accent);font-size:24px;display:flex;align-items:center}
+.flow-from{font-size:12px;color:var(--accent3)}
+.flow-to{font-size:12px;color:var(--accent2);font-weight:600;margin-top:4px}
+
+footer{text-align:center;padding:40px 20px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)}
+footer a{color:var(--accent2);text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Systematic Review &middot; Frontiers in Education 2026</div>
+  <h1>Between Cognitive Offloading<br>and Critical Autonomy</h1>
+  <div class="sub">생성형 AI의 인식론적 함의에 대한 체계적 문헌 고찰:<br>고등교육에서 인지적 위임과 비판적 자율성 사이의 긴장</div>
+  <div class="authors">Suazo Galdames, I. C., Santiesteban Velázquez, M., Saracostti, M., & Chaple Gil, A. M.</div>
+  <div class="journal">Frontiers in Education, 11 &middot; DOI: 10.3389/feduc.2026.1878665</div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="num">26</div><div class="label">분석된 연구 수<br>Studies Analyzed</div></div>
+  <div class="stat"><div class="num">4</div><div class="label">HEEP-HE 핵심 영역<br>Core Domains</div></div>
+  <div class="stat"><div class="num">6</div><div class="label">기술적 주제<br>Descriptive Themes</div></div>
+  <div class="stat"><div class="num">5</div><div class="label">분석적 주제<br>Analytical Themes</div></div>
+  <div class="stat"><div class="num">18</div><div class="label">글로벌 사우스 연구<br>Global South</div></div>
+</div>
+
+<!-- HEEP-HE Model Section -->
+<div class="section">
+  <div class="section-title">HEEP-HE 모델</div>
+  <div class="section-sub">Hybrid Epistemic Engagement Practices in AI-Mediated Higher Education</div>
+  <div class="heep-model">
+    <div class="heep-card" onclick="toggleHeep(this)">
+      <div class="heep-icon">🔬</div>
+      <div class="heep-title">Epistemological Validation</div>
+      <div class="heep-title-ko">인식론적 검증</div>
+      <div class="heep-desc">AI가 생성한 지식 주장을 검증, 정당화, 귀속하고 최종 주장에 대한 책임을 지는 역량. 학생과 교수는 삼각측량, 인용 확인, 증거 기반 추론을 통해 합성적 그럴듯함(synthetic plausibility)을 넘어 실질적 타당성을 확보해야 한다.<br><br><span class="desc-tag risk-tag">위험: 자동화 편향, 환각 정보</span><span class="desc-tag opp-tag">기회: 증거 기반 사고력 강화</span></div>
+    </div>
+    <div class="heep-card" onclick="toggleHeep(this)">
+      <div class="heep-icon">📐</div>
+      <div class="heep-title">Pedagogical Scaffolding</div>
+      <div class="heep-title-ko">교수적 비계</div>
+      <div class="heep-desc">AI 사용이 비판적 사고, 메타인지, 탐구, 증거 기반 추론을 지원하는 학습 환경 설계. AI는 비판, 증거 비교, 의사결정 정당화, 불확실성 성찰을 요구하는 과제에 내재될 때 교육적으로 의미가 있다.<br><br><span class="desc-tag risk-tag">위험: 피상적 정보 처리</span><span class="desc-tag opp-tag">기회: 메타인지적 성찰 촉진</span></div>
+    </div>
+    <div class="heep-card" onclick="toggleHeep(this)">
+      <div class="heep-icon">⚙️</div>
+      <div class="heep-title">Sociotechnical Calibration</div>
+      <div class="heep-title-ko">사회기술적 조정</div>
+      <div class="heep-desc">AI에 무엇을 위임할 수 있고, 무엇이 인간의 감독 하에 있어야 하며, 알고리즘적 한계가 지식 생산을 어떻게 형성하는지 결정하는 능력. 브레인스토밍 위임과 최종 판단 위임은 본질적으로 다르다.<br><br><span class="desc-tag risk-tag">위험: 인지적 위임 과잉</span><span class="desc-tag opp-tag">기회: 보정된 위임 학습</span></div>
+    </div>
+    <div class="heep-card" onclick="toggleHeep(this)">
+      <div class="heep-icon">🏛️</div>
+      <div class="heep-title">Civic-Democratic Resilience</div>
+      <div class="heep-title-ko">시민 민주주의적 회복력</div>
+      <div class="heep-desc">합성 정보 생태계에서 증거를 평가하고, 허위정보를 식별하며, 알고리즘적으로 생성된 주장을 심문하고, 민주적 지식 실천에 책임감 있게 참여하는 역량. AI 리터러시는 교실을 넘어 시민적 역량으로 확장된다.<br><br><span class="desc-tag risk-tag">위험: 허위정보 확산</span><span class="desc-tag opp-tag">기회: 과학적 시민성 형성</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Themes Section -->
+<div class="section" style="background:rgba(26,38,54,.5)">
+  <div class="section-title">연구 주제 분석</div>
+  <div class="section-sub">6개 기술적 주제와 5개 분석적 주제</div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('descriptive',this)">기술적 주제 (6)</div>
+    <div class="tab" onclick="switchTab('analytical',this)">분석적 주제 (5)</div>
+  </div>
+  <div id="descriptive" class="themes-grid">
+    <div class="theme-card"><div class="theme-header"><span class="theme-num" style="background:rgba(108,92,231,.2);color:var(--accent)">1</span><span class="theme-title">인식론적 권위의 재구성</span><span class="theme-title-ko">Reconfiguration of Epistemic Authority</span></div><div class="theme-body">AI는 단순한 기술 도구가 아닌 학술적 추론, 글쓰기, 지식 구성의 <strong>매개자</strong>로 자리잡았다. 전통적 학술 권위(교수, 도서관, 학문적 절차)에서 대화형 AI 시스템으로 권위가 부분적으로 재분배되면서 새로운 인식론적 의존성이 생겨났다.</div></div>
+    <div class="theme-card"><div class="theme-header"><span class="theme-num" style="background:rgba(0,206,201,.2);color:var(--accent2)">2</span><span class="theme-title">지식 검증의 취약성</span><span class="theme-title-ko">Fragility of Knowledge Validation</span></div><div class="theme-body">AI 출력물은 유창하고 설득력 있게 보이지만 증거적 근거가 부족할 수 있다. 핵심 과제는 AI의 오류 생성 여부가 아니라, 학생들이 그 오류를 <strong>감지, 해석, 수정</strong>할 수 있는 인식론적 역량을 갖추고 있는가이다. <span class="desc-tag risk-tag">환각(hallucination)</span><span class="desc-tag risk-tag">허위 인용</span></div></div>
+    <div class="theme-card"><div class="theme-header"><span class="theme-num" style="background:rgba(253,121,168,.2);color:var(--accent3)">3</span><span class="theme-title">학술적 진실성의 인식론적 전환</span><span class="theme-title-ko">Academic to Epistemic Integrity</span></div><div class="theme-body">무결성 논의가 전통적 표절 탐지에서 <strong>인식론적 책임</strong>의 문제로 이동했다. AI가 학술 작업에 기여할 때, 누가 주장, 해석, 출처, 결론에 대한 책임을 지는가? 학술적 무결성이 인식론적 무결성으로 변환되고 있다.</div></div>
+    <div class="theme-card"><div class="theme-header"><span class="theme-num" style="background:rgba(253,203,110,.2);color:var(--accent4)">4</span><span class="theme-title">인지적 오프로딩과 학습자 주체성 침식</span><span class="theme-title-ko">Cognitive Offloading & Erosion of Agency</span></div><div class="theme-body">AI를 <strong>비계(scaffold)</strong>로 활용하는 것과 <strong>대체재(substitute)</strong>로 사용하는 것 사이의 지속적 긴장. 구조화되고 성찰적이며 검증 지향적인 사용은 고차원 학습을 지원하지만, 비구조적이고 편의 지향적 사용은 인지적 노력을 대체한다. <span class="desc-tag risk-tag">의존성</span><span class="desc-tag risk-tag">비판적 사고 약화</span><span class="desc-tag opp-tag">개인화된 피드백</span></div></div>
+    <div class="theme-card"><div class="theme-header"><span class="theme-num" style="background:rgba(108,92,231,.2);color:var(--accent)">5</span><span class="theme-title">고차원 사고를 위한 비계로서의 GenAI</span><span class="theme-title-ko">GenAI as Scaffold for Higher-Order Thinking</span></div><div class="theme-body">비판적 사고, 창의성, 성찰적 사고, 탐구 기반 학습의 향상은 <strong>구조화된 사용 모델</strong>(안내된 탐구, POE/POEE 접근법, 비판적 프롬프팅)과 가장 일관되게 연관된다. AI는 학생이 검증, 설명, 메타인지를 명시적으로 수행해야 할 때 가장 강한 학습 지원 효과를 보인다.</div></div>
+    <div class="theme-card"><div class="theme-header"><span class="theme-num" style="background:rgba(0,206,201,.2);color:var(--accent2)">6</span><span class="theme-title">금지에서 거버넌스 통합으로</span><span class="theme-title-ko">From Prohibition to Governed Integration</span></div><div class="theme-body">고등교육 기관이 금지 또는 탐지 기반 접근에서 벗어나 <strong>거버넌스 통합</strong> 모델로 이동. AI 리터러시, 교사 훈련, 교육과정 통합, 기관 정책, 평가 재설계, 윤리적 AI 가이드라인 등을 통한 체계적 대응이 필요하다.</div></div>
+  </div>
+  <div id="analytical" class="themes-grid" style="display:none">
+    <div class="theme-card"><div class="theme-header"><span class="theme-num" style="background:rgba(108,92,231,.2);color:var(--accent)">1</span><span class="theme-title">정보 접근에서 인식론적 책임으로</span></div><div class="theme-body"><div class="flow" style="padding:10px 0"><div style="text-align:center"><div class="flow-from">FROM: 정보 접근 확대</div><div style="font-size:20px;color:var(--accent);margin:4px 0">→</div><div class="flow-to">TO: 합성 지식 검증의 책임 재분배</div></div></div>AI가 설명, 텍스트, 요약에 대한 접근을 확대했지만, 동시에 인식론적 책임의 부담도 증가시켰다. 학생은 정보를 단순히 얻는 것이 아니라 그 출처, 신뢰성, 증거적 근거를 평가해야 한다.</div></div>
+    <div class="theme-card"><div class="theme-header"><span class="theme-num" style="background:rgba(0,206,201,.2);color:var(--accent2)">2</span><span class="theme-title">학술 비위에서 하이브리드 저작권 거버넌스로</span></div><div class="theme-body"><div class="flow" style="padding:10px 0"><div style="text-align:center"><div class="flow-from">FROM: 표절/부정행위 프레임</div><div style="font-size:20px;color:var(--accent);margin:4px 0">→</div><div class="flow-to">TO: 인간-AI 공동 저작의 윤리적 규범</div></div></div>AI 매개 학술 작업은 저작권, 공개, 책임, 추적 가능성에 대한 새로운 규범을 요구한다. 학습자가 지적 소유권과 책임을 유지하면서 AI 지원을 윤리적으로 통합하는 방법의 규율이 필요하다.</div></div>
+    <div class="theme-card"><div class="theme-header"><span class="theme-num" style="background:rgba(253,121,168,.2);color:var(--accent3)">3</span><span class="theme-title">디지털 역량에서 인식론적 AI 리터러시로</span></div><div class="theme-body"><div class="flow" style="padding:10px 0"><div style="text-align:center"><div class="flow-from">FROM: 도구 사용 역량</div><div style="font-size:20px;color:var(--accent);margin:4px 0">→</div><div class="flow-to">TO: AI 출력물의 심문, 검증, 맥락화 역량</div></div></div>도구적 역량만으로는 부족하다. 학생은 AI가 어떻게 그럴듯한 출력물을 생성하는지, 왜 틀릴 수 있는지, 편향과 환각이 어떻게 발생하는지, 주장을 어떻게 검증해야 하는지 이해해야 한다.</div></div>
+    <div class="theme-card"><div class="theme-header"><span class="theme-num" style="background:rgba(253,203,110,.2);color:var(--accent4)">4</span><span class="theme-title">인지적 보조에서 보정된 위임으로</span></div><div class="theme-body"><div class="flow" style="padding:10px 0"><div style="text-align:center"><div class="flow-from">FROM: 인지적 부하 감소</div><div style="font-size:20px;color:var(--accent);margin:4px 0">→</div><div class="flow-to">TO: 어떤 인식론적 과제를 위임할 수 있는지 판단</div></div></div>문제는 위임 자체가 아니라 <strong>비보정된 위임</strong>이다. 증거 평가, 최종 주장, 불확실성 해석, 결론에 대한 책임은 인간의 판단 하에 남아야 하는 과제를 아는 것이 핵심이다.</div></div>
+    <div class="theme-card"><div class="theme-header"><span class="theme-num" style="background:rgba(108,92,231,.2);color:var(--accent)">5</span><span class="theme-title">개인적 사용에서 제도적 인식론적 거버넌스로</span></div><div class="theme-body"><div class="flow" style="padding:10px 0"><div style="text-align:center"><div class="flow-from">FROM: 개별 학생/교사의 책임</div><div style="font-size:20px;color:var(--accent);margin:4px 0">→</div><div class="flow-to">TO: 교육과정, 평가, 정책을 통한 제도적 거버넌스</div></div></div>책임 있는 AI 사용은 개인에게만 맡길 수 없다. 교육과정, 평가, 교수 개발, 정책, 도서관 지원, 윤리 가이드라인, 역량 프레임워크를 통한 제도적 거버넌스가 필요하다.</div></div>
+  </div>
+</div>
+
+<!-- Risks & Opportunities -->
+<div class="section">
+  <div class="section-title">위험과 기회</div>
+  <div class="section-sub">Risks and Opportunities Identified Across 26 Studies</div>
+  <div class="risk-opp">
+    <div class="ro-col">
+      <h3><span style="color:var(--accent3)">⚠️</span> 핵심 위험 요인 (Risks)</h3>
+      <div class="ro-item"><div class="ro-dot" style="background:var(--accent3)"></div><div><strong>과잉 의존 (Overreliance)</strong><br>AI 출력물에 대한 비판적 검토 없는 수용</div></div>
+      <div class="ro-item"><div class="ro-dot" style="background:var(--accent3)"></div><div><strong>인지적 오프로딩</strong><br>인지적 과제의 무비판적 외주화</div></div>
+      <div class="ro-item"><div class="ro-dot" style="background:var(--accent3)"></div><div><strong>환각 정보 (Hallucinations)</strong><br>사실적으로 보이나 근거 없는 출력물</div></div>
+      <div class="ro-item"><div class="ro-dot" style="background:var(--accent3)"></div><div><strong>비판적 사고 약화</strong><br>분석적 참여와 평가적 판단 감소</div></div>
+      <div class="ro-item"><div class="ro-dot" style="background:var(--accent3)"></div><div><strong>자동화 편향 (Automation Bias)</strong><br>AI의 권위적 언어에 대한 무비판적 신뢰</div></div>
+    </div>
+    <div class="ro-col">
+      <h3><span style="color:var(--accent2)">✨</span> 핵심 기회 요인 (Opportunities)</h3>
+      <div class="ro-item"><div class="ro-dot" style="background:var(--accent2)"></div><div><strong>피드백 리터러시</strong><br>즉각적이고 개인화된 피드백 제공</div></div>
+      <div class="ro-item"><div class="ro-dot" style="background:var(--accent2)"></div><div><strong>메타인지적 성찰</strong><br>자기 사고 과정에 대한 성찰 촉진</div></div>
+      <div class="ro-item"><div class="ro-dot" style="background:var(--accent2)"></div><div><strong>자기조절학습 지원</strong><br>학습 과정의 자기 관리 역량 강화</div></div>
+      <div class="ro-item"><div class="ro-dot" style="background:var(--accent2)"></div><div><strong>비계적 추론 (Scaffolded Reasoning)</strong><br>구조화된 탐구와 단계적 사고 지원</div></div>
+      <div class="ro-item"><div class="ro-dot" style="background:var(--accent2)"></div><div><strong>개념적 명확화</strong><br>복잡한 개념의 접근성 향상과 설명</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Key Insight -->
+<div class="section" style="background:linear-gradient(135deg,rgba(108,92,231,.08),rgba(0,206,201,.08))">
+  <div class="container" style="max-width:800px;text-align:center">
+    <div style="font-size:40px;margin-bottom:16px">💡</div>
+    <div class="section-title" style="font-size:22px">핵심 통찰 (Key Insight)</div>
+    <p style="font-size:16px;line-height:1.8;color:var(--text);margin-top:16px">
+      생성형 AI의 교육적 가치는 <strong style="color:var(--accent)">기술 자체</strong>가 아니라 <strong style="color:var(--accent2)">교수적 설계, AI 리터러시, 평가 관행</strong>에 의해 매개된다. 핵심 교육 과제는 AI 사용을 금지하거나 자동적 혁신으로 찬양하는 것이 아니라, AI 매개 지식을 <strong style="color:var(--accent4)">심문, 검증, 맥락화, 윤리적으로 통합</strong>할 수 있는 학습자를 양성하는 것이다.
+    </p>
+    <p style="font-size:13px;color:var(--muted);margin-top:12px;font-style:italic">
+      "The central educational task was not to prevent AI use, nor to celebrate it as automatic innovation, but to cultivate learners capable of interrogating, validating, contextualizing, and ethically integrating AI-mediated knowledge."
+    </p>
+  </div>
+</div>
+
+<footer>
+  <p>Interactive Infographic &middot; <a href="https://donghunc.kr" target="_blank">donghunc.kr</a></p>
+  <p style="margin-top:8px">Source: Suazo Galdames et al. (2026). <em>Frontiers in Education</em>, 11. <a href="https://doi.org/10.3389/feduc.2026.1878665" target="_blank">DOI: 10.3389/feduc.2026.1878665</a></p>
+</footer>
+
+<script>
+function toggleHeep(el){
+  const wasActive=el.classList.contains('active');
+  document.querySelectorAll('.heep-card').forEach(c=>c.classList.remove('active'));
+  if(!wasActive)el.classList.add('active');
+}
+function switchTab(id,tabEl){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  tabEl.classList.add('active');
+  document.getElementById('descriptive').style.display=id==='descriptive'?'grid':'none';
+  document.getElementById('analytical').style.display=id==='analytical'?'grid':'none';
+  // Re-trigger animations
+  const cards=document.getElementById(id).querySelectorAll('.theme-card');
+  cards.forEach((c,i)=>{c.style.animation='none';c.offsetHeight;c.style.animation='fadeUp .5s ease '+(i*0.1)+'s forwards'});
+}
+// Auto-open first HEEP card
+document.querySelector('.heep-card').classList.add('active');
+</script>
+</body>
+</html>
